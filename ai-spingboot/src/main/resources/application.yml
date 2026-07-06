@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/mental_health_assistant?useSSL=false&serverTimezone=UTC}
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:}
+
+  ai:
+    openai:
+      chat:
+        options:
+          model: deepseek-ai/DeepSeek-V4-Flash
+          tool-calling:
+            enabled: true
+        completions-path: /v1/chat/completions
+      api-key: ${AI_API_KEY:}
+      base-url: ${AI_BASE_URL:https://api.siliconflow.cn}
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# 服务器配置
+server:
+  port: 1236
+
+# 静态资源映射 - 上传文件访问
+web:
+  upload-path: ./uploads/
+spring.mvc.static-path-pattern: /uploads/**
+spring.web.resources.static-locations: file:./uploads/
+
+# JWT配置
+jwt:
+  secret: ${JWT_SECRET:}
+  expiration: 86400000  # 24小时（毫秒）
+  refresh-expiration: 604800000  # 7天（毫秒）
+  header: Authorization  # token头部名称
+  token-prefix: "Bearer "  # token前缀
